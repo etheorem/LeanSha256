@@ -1,0 +1,33 @@
+name = "LeanSha256"
+defaultTargets = ["LeanSha256"]
+# Lake's leanc default is `-O3 -DNDEBUG -fPIC` with the usual
+# hardening flags. We add `-march=native` so the host's
+# AVX2/AVX-512/SHA-NI extensions are visible to the Lean→C path:
+# autovectorisation of the per-byte SHA-256 message-schedule and
+# compression loops in `LeanSha256.Core` is the main win. Cascades
+# to both `lean_lib`s in this package. Same `-march=native` caveat as
+# elsewhere — bakes in the build host's ISA.
+moreLeancArgs = ["-march=native"]
+
+[[lean_lib]]
+name = "LeanSha256"
+# Match the other main libraries (`SizzLean`, `LeanEthCS`): ship the
+# library as a precompiled shared lib so importers link against
+# native code rather than compiling the modules themselves. With
+# only one downstream consumer (`SizzLean`) the build-time win is
+# small, but this makes the monorepo's precompile policy uniform —
+# every main lib precompiled, both test libs (build-time
+# `native_decide` gates) left at the default.
+precompileModules = true
+
+# NIST CAVP gates live at the package root level under
+# `LeanSha256Tests/`, forming a separate `LeanSha256Tests.*` module
+# hierarchy (the package-prefixed name avoids collisions with
+# `SizzLean`'s `SizzLeanTests` lib when both are visible in the
+# umbrella build). The heavy `native_decide` batch (~108s) only
+# fires when this lib is built explicitly via
+# `lake build LeanSha256Tests` or `just test-sha256`.
+[[lean_lib]]
+name = "LeanSha256Tests"
+roots = ["LeanSha256Tests"]
+globs = ["LeanSha256Tests.*"]
