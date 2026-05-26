@@ -8,6 +8,11 @@ typeclasses, no SSZ coupling — just `hash : ByteArray → ByteArray`
 and `combine : ByteArray → ByteArray → ByteArray` plus a handful
 of structural conformance lemmas against FIPS 180-4.
 
+Distributable as an independent Lake package (license
+`LGPL-3.0-only`, no external dependencies); see the in-package
+`README.md` for the `[[require]]` snippet downstream consumers
+should use.
+
 This root re-exports the implementation:
 
 * `LeanSha256.Core` — FIPS 180-4 constants, round functions,

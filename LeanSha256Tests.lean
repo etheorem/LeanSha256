@@ -5,8 +5,9 @@ import LeanSha256Tests.Nist
 
 The full NIST CAVP byte-oriented test suite for SHA-256 (129
 vectors: 65 ShortMsg + 64 LongMsg), auto-generated from
-`cavp/SHA256*Msg.rsp` by `scripts/gen_sha256_cavp.py`. Each vector
-is a `native_decide` assertion that `LeanSha256.hash msg = md`.
+`cavp/SHA256*Msg.rsp` by `scripts/gen_sha256_cavp.py` (sibling of
+the `cavp/` directory inside this package). Each vector is a
+`native_decide` assertion that `LeanSha256.hash msg = md`.
 
 Build with:
 

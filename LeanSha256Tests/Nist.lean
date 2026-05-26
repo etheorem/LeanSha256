@@ -7,8 +7,9 @@ Auto-generated from `cavp/SHA256ShortMsg.rsp` +
 `cavp/SHA256LongMsg.rsp` (CAVS 11.0 byte-oriented test files
 distributed by NIST's Cryptographic Algorithm Validation Program).
 The shabytetestvectors archive lives on csrc.nist.gov; the .rsp
-files are committed to this repo under `cavp/` and regenerated via
-`scripts/gen_sha256_cavp.py`.
+files are committed to this package under `cavp/` and regenerated
+via the sibling `scripts/gen_sha256_cavp.py` (umbrella shortcut:
+`just gen-cavp`).
 
 This file lives in the `LeanSha256` library — it validates the
 SHA-256 *spec* directly against NIST's published vectors,
@@ -21,8 +22,8 @@ triple emits one `native_decide` example:
 FFI ≡ NIST follows by transitivity from:
 
 * this file (spec ≡ NIST on 129 vectors);
-* `LeanSha256Tests/Sha256Equivalence.lean` (FFI ≡ spec on
-  randomised inputs + the 5 NIST §B vectors via
+* `packages/SizzLean/SizzLeanTests/Sha256Equivalence.lean`
+  (FFI ≡ spec on randomised inputs + the 5 NIST §B vectors via
   `Sha256Vectors.lean`).
 
 The cross-implementation gate is empirical — a deliberate
