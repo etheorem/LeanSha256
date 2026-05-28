@@ -2,14 +2,16 @@ name = "LeanSha256"
 version = "0.1.0"
 description = "Pure-Lean SHA-256 reference implementation: NIST CAVP-validated, kernel-reducible, no FFI."
 keywords = ["sha256", "cryptography", "lean4", "fips-180-4", "nist-cavp"]
-# SPDX identifier; the LICENSE file lives at the umbrella repo root.
-# `licenseFiles` resolves relative to this `lakefile.toml`, so
-# `../../LICENSE` reaches the monorepo root copy — single source of
-# truth shared with the `SizzLean` and `LeanEthCS` subpackages
-# (matches the declaration in `packages/SizzLean/lakefile.lean`).
+# SPDX identifier. The `LICENSE` file at this package's root is a
+# pinned copy of the umbrella's `LICENSE` (LGPL-3.0-only); shipping
+# it locally makes the package self-contained when subtree-split out
+# to `github.com/etheorem/LeanSha256` (Reservoir indexes the
+# downstream repo, which has no `../../LICENSE` to follow). The
+# umbrella copy at the repo root remains the upstream source of
+# truth; the local copy is overwritten by the mirror workflow.
 # Reservoir expects a single-identifier SPDX expression.
 license = "LGPL-3.0-only"
-licenseFiles = ["../../LICENSE"]
+licenseFiles = ["LICENSE"]
 defaultTargets = ["LeanSha256"]
 # Lake's leanc default is `-O3 -DNDEBUG -fPIC` with the usual
 # hardening flags. We add `-march=native` so the host's

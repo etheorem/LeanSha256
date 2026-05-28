@@ -1,5 +1,30 @@
 # LeanSha256
 
+> [!IMPORTANT]
+> **Issues and pull requests belong in the
+> [`etheorem` monorepo](https://github.com/etheorem/etheorem) — not
+> here.** `LeanSha256` is developed inside the umbrella repo under
+> `packages/LeanSha256/`; this repository is a **read-only
+> subtree mirror** regenerated on every push to the umbrella's
+> `main`. Issues filed here, and pull requests opened against this
+> repo's branches, will not be acted on — please redirect them to
+> the umbrella. Any direct pushes to this repo's `main` are
+> overwritten by the next mirror run.
+>
+> The mirror exists so the package is independently discoverable
+> on [Reservoir](https://reservoir.lean-lang.org) (which indexes
+> repository roots, not monorepo subdirectories). The umbrella
+> remains the single source of truth.
+
+## Where to file issues / contribute
+
+→ **[github.com/etheorem/etheorem](https://github.com/etheorem/etheorem)**
+(the monorepo). Look under `packages/LeanSha256/` for this
+library's source; the umbrella's `CLAUDE.md` documents the
+project-wide conventions.
+
+---
+
 A pure-Lean SHA-256 reference implementation. Two functions in the
 public surface (`hash` and `combine`); NIST CAVP-validated against
 the FIPS 180-4 published vectors; kernel-reducible (no FFI, no
@@ -101,24 +126,38 @@ just gen-cavp
 
 ## Requiring this package
 
-`LeanSha256` is published from the [`etheorem` umbrella
-repository](https://github.com/etheorem/etheorem). It can be
-required either from inside the umbrella or as a standalone
-package — both forms are supported because the package is
-self-contained (no FFI, no shared sources outside its own
-directory).
-
-**From another Lake project, via git** (typical):
+`LeanSha256` is published as a standalone Lake package at
+[`etheorem/LeanSha256`](https://github.com/etheorem/LeanSha256) (a
+subtree mirror of `packages/LeanSha256/` from the
+[`etheorem` umbrella repo](https://github.com/etheorem/etheorem)).
+Downstream Lake projects can require it directly:
 
 ```toml
 [[require]]
 name = "LeanSha256"
-git = "https://github.com/etheorem/etheorem"
-subDir = "packages/LeanSha256"
-rev = "<commit-sha>"  # pin to a commit for reproducible builds
+git = "https://github.com/etheorem/LeanSha256"
+rev = "v0.1.0"  # pin to a release tag or a specific commit sha
 ```
 
-**From a local copy, via path** (vendoring or development):
+The mirror exposes `vX.Y.Z` tags for each release. The umbrella's
+own release tags use a `leansha256-vX.Y.Z` prefix; the mirror
+workflow strips the prefix.
+
+Either form (mirror or umbrella) can also be required by `subDir`
+if you want the package directly from the monorepo source — useful
+during development, but for general consumption the mirror is the
+canonical address:
+
+```toml
+# Source the package from the monorepo (for development / debugging):
+[[require]]
+name = "LeanSha256"
+git = "https://github.com/etheorem/etheorem"
+subDir = "packages/LeanSha256"
+rev = "<commit-sha>"
+```
+
+**From a local copy, via path** (vendoring or `git submodule`):
 
 ```toml
 [[require]]
@@ -128,11 +167,12 @@ path = "vendor/LeanSha256"
 
 Then run `lake update` to refresh `lake-manifest.json`. Per the
 umbrella's [`CLAUDE.md`](../../CLAUDE.md) dependency policy,
-prefer pinning `rev` to a specific commit hash over tracking a
-branch once you've validated a working pair.
+prefer pinning `rev` to a specific commit hash or release tag over
+tracking a branch.
 
 ## Licence
 
-LGPL-3.0-only. The licence text is the umbrella repo's
-[`LICENSE`](../../LICENSE), referenced by this package's
-`lakefile.toml` via `licenseFiles = ["../../LICENSE"]`.
+LGPL-3.0-only. The package ships a local copy of the licence text
+at `LICENSE`, pinned from the umbrella repo's root `LICENSE`. The
+mirror workflow refreshes the local copy on every push to keep it
+in sync.
